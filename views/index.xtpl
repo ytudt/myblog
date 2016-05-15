@@ -2,9 +2,18 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-    </head>
-    <body>
-    <h1>我是首页</h1>
-    </body>
+        <link src="./css/index.css"></link>
+        <script src='./js/lib/angular.js'></script>
+        <script src='./js/lib/angular-ui-router.js'></script>
+        <script src='./js/app.js'></script>
+        <script src='./js/router.js'></script>
 
+    </head>
+    <body ng-app='myApp'>
+    <h1>AngularJS Home Page (Ui-router Demonstration)</h1>
+    <div ui-view> </div>
+
+
+
+    </body>
 </html>
