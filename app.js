@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+const log4js=require('./config/log4js.js');
 
 // var routes = require('./routes/index');
 // var users = require('./routes/users');
@@ -20,8 +21,11 @@ app.set('views',path.join(__dirname,'views'));
 app.set('view engine', 'xtpl');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+if(config.isDev){
+  // app.use(logger('dev'));
+}
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -76,9 +80,10 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+// 调用log4js
+log4js.nodelog4js (log4js.config).debug('debug logger');
 
-console.log(port);
-console.log(config.ipAdd);
+
 app.listen(port,config.ipAdd,function(){
   console.log('server is running at port '+port);
 })
