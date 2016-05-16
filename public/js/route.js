@@ -7,6 +7,6 @@
 
 angular.module('route',[])
 .config(['$stateProvider','$urlRouterProvider',funcion($stateProvider,$urlRouterProvider){
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/tab/javascript');
 
 }])

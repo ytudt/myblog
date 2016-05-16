@@ -17,11 +17,11 @@ angular.module('router',[])
             url:"/nodejs",
             templateUrl: "template/nodejs.html"
         })
-          .state("register", {
+          .state("tab.register", {
             url: "/register",
             templateUrl: "template/register.html"
         })
-            .state("login", {
+            .state("tab.login", {
             url: "/login",
             templateUrl: "template/login.html"
         })
