@@ -11,7 +11,8 @@ angular.module('router',[])
         })
         .state("tab.angular", {
             url:"/angular",
-            templateUrl: "template/angular.html"
+            templateUrl: "template/angular.html",
+            controller: 'ModalDemoCtrl'
         })
         .state("tab.nodejs", {
             url:"/nodejs",

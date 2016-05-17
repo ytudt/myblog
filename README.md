@@ -19,8 +19,9 @@
   - routes node路由文件夹
   - public 静态文件
      + css 全局样式文件夹
+       - lib 前台需要的css库 
      + js 全局js文件夹
-         - lib 前台需要的库
+       - lib 前台需要的库
      + images 静态图片文件夹
 
 

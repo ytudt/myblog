@@ -2,18 +2,28 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="stylesheet" href="./css/lib/bootstrap.min.css">
+        <link rel="stylesheet" href="./css/lib/ui-bootstrap-csp.css">
         <link src="./css/index.css"></link>
         <script src='./js/lib/angular.js'></script>
         <script src='./js/lib/angular-ui-router.js'></script>
+        <script src='./js/lib/angular-animate.min.js'></script>
+        <script src='./js/lib/angular-touch.min.js'></script>
+        <script src='./js/lib/ui-bootstrap-tpls.min.js'></script>
         <script src='./js/app.js'></script>
         <script src='./js/router.js'></script>
-
+        <script src='./js/controllers/01.js'></script>
     </head>
     <body ng-app='myApp'>
-    <h1>AngularJS Home Page (Ui-router Demonstration)</h1>
-    <div ui-view> </div>
-
-
+    <div class=".container">
+        <div class="row">
+            <div class=".col-lg-12 col-md-12 .col-sm-12 .col-xs-12">
+                <h1>AngularJS Home Page (Ui-router Demonstration)</h1>
+                <div ui-view> </div>
+            </div>
+        </div>
+    </div>
 
     </body>
 </html>
