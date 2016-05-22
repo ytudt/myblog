@@ -1,1 +1,24 @@
-<h1>注册页面</h1>
+<div id="register" class="container">
+  <div class="row">
+    <form role="form">
+      <div class="form-group">
+        <label for="InputEmail1" >邮箱</label>
+        <input type="email" class="form-control" id="InputEmail1" placeholder="请输入邮箱..." ng-model="email">
+      </div>
+         <div class="form-group">
+        <label for="InputUsername">用户名</label>
+        <input type="text" class="form-control" id="InputUsername" placeholder="请输入用户名" ng-model="userName">
+      </div>
+      <div class="form-group">
+        <label for="InputPassword1">密码</label>
+        <input type="password" class="form-control" id="InputPassword1" placeholder="请输入密码..." ng-model="psd">
+      </div>
+         <div class="form-group">
+        <label for="InputPassword2">确认密码</label>
+        <input type="password" class="form-control" id="InputPassword2" placeholder="请再次输入密码..." ng-model="repsd">
+      </div>
+
+      <button type="submit" class="btn btn-primary" ng-click="submit()">注册</button>
+    </form>
+  </div>
+</div>

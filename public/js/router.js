@@ -1,4 +1,4 @@
-angular.module('router',[])
+angular.module('router',['register'])
 .config(function($stateProvider, $urlRouterProvider){
   $stateProvider
         .state("tab", {
@@ -20,7 +20,8 @@ angular.module('router',[])
         })
           .state("tab.register", {
             url: "/register",
-            templateUrl: "template/register.html"
+            templateUrl: "template/register.html",
+             controller:"registerCtr"
         })
             .state("tab.login", {
             url: "/login",

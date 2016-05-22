@@ -1,12 +1,17 @@
-<div>
-     <div>
-         <span style="width:100px" ui-sref=".javascript"><a href="">Page-1</a></span>
-         <span style="width:100px" ui-sref=".angular"><a href="">Page-2</a></span>
-         <span style="width:100px" ui-sref=".nodejs"><a href="">Page-3</a></span>
-         <span style="width:100px" ui-sref=".register"><a href="">register</a></span>
-         <span style="width:100px" ui-sref=".login"><a href="">login</a></span>
-     </div>
-     <div>
-          <div ui-view=""/>
-     </div>
+<div id="tab">
+  <div class="clearfix">
+    <h1 class="logo fl" ui-sref=".javascript">前端交流社区</h1>
+    <div class="fl">
+      <span style="width:100px" ui-sref=".javascript"><a href="">javascript</a></span>
+      <span style="width:100px" ui-sref=".angular"><a href="">angular</a></span>
+      <span style="width:100px" ui-sref=".nodejs"><a href="">node</a></span>
+    </div>
+    <div class="fr">
+      <span style="width:100px" ui-sref=".register"><a href="">注册</a></span>
+      <span style="width:100px" ui-sref=".login"><a href="">登录</a></span>
+    </div>
+  </div>
+  <div>
+    <div ui-view="" />
+  </div>
 </div>
