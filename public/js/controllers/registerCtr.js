@@ -1,11 +1,11 @@
-angular.module('register', ['register.service'])
-  .controller('registerCtr', ['$scope', function($scope,registerFty) {
-    console.log($scope.email);
+angular.module('register', ['register.service','indexdb'])
+  .controller('registerCtr', ['$scope','indexDbJs', function($scope,registerFty,indexDbJs) {
     $scope.submit = function() {
-      console.log($scope.email);
-      console.log($scope.userName);
-      console.log($scope.psd);
-      console.log($scope.repsd);
+      // console.log($scope.repsd);
+      indexDbJs.createDb({
+          name:'dt',
+          version:111
+      });
+      console.log(indexDbJs);
     }
-
   }]);
