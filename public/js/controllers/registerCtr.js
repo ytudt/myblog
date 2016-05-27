@@ -1,11 +1,19 @@
 angular.module('register', ['register.service','indexdb'])
-  .controller('registerCtr', ['$scope','indexDbJs', function($scope,registerFty,indexDbJs) {
+  .controller('registerCtr', ['$scope','indexDbJs', function($scope,indexDbJs) {
     $scope.submit = function() {
-      // console.log($scope.repsd);
-      indexDbJs.createDb({
-          name:'dt',
-          version:111
-      });
-      console.log(indexDbJs);
+
+      // indexDbJs.createDb({
+      //     stname:'ppp'
+      // });
+      indexDbJs.add('pp',{
+        name:'dt',
+        age:18
+      },function(){
+        console.log(111)
+      },function(){
+        console.log(222)
+      })
+
+
     }
   }]);

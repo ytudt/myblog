@@ -16,8 +16,5 @@ const router = express.Router();
 const indexController=require('./controller/index');
 
 router.get('/',indexController.showIndex);
-// router.get('/',function(){
-//   console.log(111);
-// })
 
 module.exports=router;
