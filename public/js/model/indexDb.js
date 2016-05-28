@@ -1,82 +1,312 @@
 angular.module('indexdb', [])
-  .factory('indexDbJs', [function() {
+    .factory('indexDbJs', [function() {
 
-    window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-    window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
-    window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
-    window.IDBCursor = window.IDBCursor || window.webkitIDBCursor || window.msIDBCursor;
-    var db = {
-      dbName: 'nodedb',
-      obj: {},
-      dbInstance: {},
-      errorHandler: function(error) {
-        console.log('error: ' + error.target.error.message);
-      },
+        window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+        window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
+        window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+        window.IDBCursor = window.IDBCursor || window.webkitIDBCursor || window.msIDBCursor;
+        var db = {
+            dbName: 'dtdb',
+            obj: {},
+            dbInstance: {},
+            errorHandler: function(error) {
+                console.log('error: ' + error.target.error.message);
+            },
+            // 打开数据库，没有则自动创建
+            open: function(func, fail) {
+                var dbContent = window.indexedDB.open(db.dbName);
+                dbContent.onupgradeneeded = db.upgrade;
+                dbContent.onerror = db.errorHandler;
+                dbContent.onsuccess = function(e) {
+                    db.dbInstance = dbContent.result;
+                    db.dbInstance.onerror = fail;
+                    func();
+                };
+            },
+            // 关闭数据库
+            closeDB: function(db) {
+                db.close();
+            },
+            // 创建数据表
+            createStore: function(storeInfo, indeInfo, callback) {
+                db.obj.stname = storeInfo.stname;
+                db.obj.indeInfo = indeInfo;
+                //创建数据库
+                var version = db.getdbVeision();
+                // console.log(version);
+                // var req = window.indexedDB.open(db.dbName);
+                // req.onsuccess = function(e) {
+                // var version = e.target.result.version;
+                var dbContent = window.indexedDB.open(db.dbName, version);
+                // console.log(dbContent.getVesdion)
+                // 判断数据库版本号是否更新``
+                // dbContent.onupgradeneeded = db.upgrade;
+                dbContent.onupgradeneeded = function(e) {
+                        console.log('更新了');
+                        var _db = e.target.result,
+                            names = _db.objectStoreNames;
+                        // 此处可以创建多个表
+                        var name = db.obj.stname;
+                        // console.log(db.obj.stname);
+                        // console.log(name);
+                        if (!names.contains(name)) {
+                            var store = _db.createObjectStore(
+                                db.obj.stname, {
+                                    keyPath: 'id',
+                                    autoIncrement: true
+                                });
+                            // 如果创建数据表时传过来的索引信息不为空则创建索引
+                            if (db.obj.indeInfo && db.obj.indeInfo.length !== 0) {
+                                for (var i = 0; i < db.obj.indeInfo.length; i++) {
+                                    store.createIndex(db.obj.indeInfo[i].indexName, db.obj.indeInfo[i].index, { unique: false });
+                                }
+                            }
 
-      open: function(func, fail) {
-        var dbContent = window.indexedDB.open(db.dbName);
-        dbContent.onupgradeneeded = db.upgrade;
-        dbContent.onerror = db.errorHandler;
-        dbContent.onsuccess = function(e) {
-          db.dbInstance = dbContent.result;
-          db.dbInstance.onerror = fail;
-          func();
+                        }
+                    },
+                    // 创建数据库成功事件
+                    dbContent.onsuccess = function(e) {
+                        db.dbInstance = dbContent.result;
+                        // db.dbInstance.onerror = null;
+                        // console.log(db);
+                    },
+                    // 创建数据库成功事件
+                    dbContent.onerror = function() {
+                        console.log(333);
+                    }
+                    // }
+
+            },
+            // 获得数据表
+            getObjectStore: function(objectStoreName, mode) {
+                var txn, store;
+                mode = mode || 'readonly';
+                txn = db.dbInstance.transaction([objectStoreName], mode);
+                store = txn.objectStore(objectStoreName);
+                return store;
+            },
+            // 当数据库版本更新时创建数据表
+            upgrade: function(e) {
+                console.log('更新了');
+                var _db = e.target.result,
+                    names = _db.objectStoreNames;
+                // 此处可以创建多个表
+                var name = db.obj.stname;
+                // console.log(db.obj.stname);
+                // console.log(name);
+                if (!names.contains(name)) {
+                    var store = _db.createObjectStore(
+                        db.obj.stname, {
+                            keyPath: 'id',
+                            autoIncrement: true
+                        });
+                    // 如果创建数据表时传过来的索引信息不为空则创建索引
+                    if (db.obj.indeInfo && db.obj.indeInfo.length !== 0) {
+                        for (var i = 0; i < db.obj.indeInfo.length; i++) {
+                            store.createIndex(db.obj.indeInfo[i].indexName, db.obj.indeInfo[i].index, { unique: false });
+                        }
+                    }
+
+                }
+            },
+            // 添加数据
+            add: function(objectStoreName, data, callback) {
+                // 如果此处是数组在此函数内部循环，而不是循环调用add函数是否会快点。
+                db.open(function() {
+                    var store, req, mode = 'readwrite';
+                    var addNum = 0;
+                    store = db.getObjectStore(objectStoreName, mode);
+                    for (var i = 0; i < data.length; i++) {
+                        var req = store.add(data[i]);
+                        req.onsuccess = function() {
+                            addNum++;
+                            if (addNum >= data.length) {
+                                callback(true);
+                            }
+                        };
+                        req.onerror = function() {
+                            callback(false);
+                        };
+                    }
+                    //     req = store.add(data);
+                    // req.onsuccess = function() {
+                    //     console.log('add');
+                    // };
+                    // req.onerror = fail;
+                });
+
+            },
+            //更新数据表
+            update: function(objectStoreName, data, callback) {
+                db.open(function() {
+                    var store, req, mode = 'readwrite';
+                    var updateNum = 0;
+                    store = db.getObjectStore(objectStoreName, mode);
+                    for (var i = 0; i < data.length; i++) {
+                        var req = store.put(data[i]);
+                        req.onsuccess = function() {
+                                updateNum++;
+                                if (updateNum >= data.length) {
+                                    callback(true);
+                                }
+                            },
+                            req.onerror = function() {
+                                callback(false);
+                            }
+                    };
+                    // }
+                    // req = store.put(data);
+                    // req.onsuccess = success;
+                    // req.onerror = fail;
+                });
+            },
+            selectDataById: function(objectStoreName, id, callback) {
+                db.open(function() {
+                    var store = db.getObjectStore(objectStoreName),
+                        req = store.get(id);
+                    req.onsuccess = function(e) {
+                        callback(e.target.result)
+                            // console.log(e.target.result);
+
+                    };
+                    req.onerror = callback(false);
+                });
+
+            },
+            // 通过自己创建的索引查找数据(不加游标)
+            // selectDataByIndex: function(objectStoreName, indexName, data) {
+            //     db.open(function() {
+            //         var store = db.getObjectStore(objectStoreName);
+            //             var index = store.index(indexName);
+            //         var result = [];
+            //         for (var i = 0; i < data.length; i++) {
+            //             index.get(data[i]).onsuccess = function(e) {
+            //                 result.push(e.target.result);
+            //                 console.log(result);
+
+            //             }
+            //         }
+            //         console.log(11);
+            //     });
+
+            // },
+            //  通过自己创建的索引查找数据(增加游标)
+            // selectDataByIndex: function(objectStoreName, indexName, searchData, callback) {
+            //     db.open(function() {
+            //         var store = db.getObjectStore(objectStoreName);
+            //         var index = store.index(indexName);
+            //         var data = [];
+            //         var request = index.openCursor(IDBKeyRange.only(searchData))
+            //         request.onsuccess = function(e) {
+            //             var cursor = e.target.result;
+            //             if (cursor) {
+            //                 var result = cursor.value;
+            //                 data.push(result);
+            //                 // console.log(data);
+            //                 if(result&&result!==null){
+
+            //                    cursor.continue();
+            //                  }else{
+
+            //                  }
+            //                 // console.log(result);
+            //             }else {
+            //                 callback(data);
+            //             }
+            //         },
+            //         request.onerror = callback(false);
+
+            //     });
+
+            // },
+            selectDataByIndex: function(objectStoreName, indexName, searchData, callback) {
+                db.open(function() {
+                    var store = db.getObjectStore(objectStoreName);
+                    var index = store.index(indexName);
+                    var data = [];
+                    var cursor = index.openCursor(IDBKeyRange.only(searchData))
+                    cursor.onsuccess = function(e) {
+                            if (e.target.result) {
+                                var result = e.target.result.value;
+                                // var result = result.value;
+                                // console.log(result);
+                                data.push(result);
+                                // console.log(data);
+                                if (result && result !== null) {
+
+                                    e.target.result.continue();
+                                } else {
+
+                                }
+                                // console.log(result);
+                            } else {
+                                callback(data);
+                            }
+                        },
+                        cursor.onerror = function() {
+                            callback(false);
+                        };
+
+                });
+
+            },
+            // 获得一个数据表的所有数据
+            getAll: function(objectStoreName, callback) {
+
+                db.open(function() {
+                    var
+                        store = db.getObjectStore(objectStoreName),
+                        cursor = store.openCursor(),
+                        data = [];
+
+                    cursor.onsuccess = function(e) {
+                        console.log('getall');
+                        var result = e.target.result;
+                        if (result && result !== null) {
+                            data.push(result.value);
+                            result.continue();
+                            // callback(data);
+                        } else {
+
+                            callback(data);
+
+                        }
+
+                    };
+                    cursor.onerror = callback(false);
+
+                });
+            },
+            // 清空某个数据表
+            // deleteAllDate: function(dbName,objectStoreName) {
+            //   var version=db.getdbVeision()
+            //   db.open(dbName);
+            // },
+            // 删除某个数据表
+            deleteStore: function(objectStoreName) {
+              db.open(function(){
+                 // if (db.objectStoreNames.contains(objectStoreName)) {
+                    db.deleteObjectStore(objectStoreName);
+                 // }
+              });
+
+            },
+            deleteAllStore: function(objectStoreName, success, fail) {
+
+            },
+              // 删除某个数据库
+            deleteDB(dbName) {
+                indexedDB.deleteDatabase(dbName);
+            },
+            // 获得数据库当前版本
+            getdbVeision: function() {
+                var dbVersion = parseInt(localStorage.getItem("dbVersion")) || 1;
+                dbVersion++;
+                localStorage.setItem("dbVersion", dbVersion);
+                return dbVersion;
+
+            }
+
         };
-      },
-      // createDb: function(dbInfo) {
-      //   db.obj.stname = dbInfo.stname;
-      //   //创建数据库
-      //   var req = window.indexedDB.open(db.dbName);
-      //   req.onsuccess = function(e) {
-      //     var version = e.target.result.version;
-      //     var dbContent = window.indexedDB.open(db.dbName, ++version);
-      //     // console.log(dbContent.getVesdion)
-      //     // 判断数据库版本号是否更新``
-      //     dbContent.onupgradeneeded = db.upgrade;
-      //     // 创建数据库成功事件
-      //     dbContent.onsuccess = function(e) {
-      //         db.dbInstance = dbContent.result;
-      //         // db.dbInstance.onerror = null;
-      //         console.log(db);
-      //       },
-      //       // 创建数据库成功事件
-      //       dbContent.onerror = function() {
-      //         console.log(333);
-      //       }
-      //   }
-
-      // },
-      getObjectStore: function(objectStoreName, mode) {
-        var txn, store;
-        mode = mode || 'readonly';
-        txn = db.dbInstance.transaction([objectStoreName], mode);
-        store = txn.objectStore(objectStoreName);
-        return store;
-      },
-      upgrade: function(e) {
-        var _db = e.target.result,
-          names = _db.objectStoreNames;
-        // 此处可以创建多个表
-        var name = db.obj.stname;
-        // console.log(db.obj.stname);
-        // console.log(name);
-        if (!names.contains(name)) {
-          _db.createObjectStore(
-            db.obj.stname, {
-              keyPath: 'id',
-              autoIncrement: true
-            });
-        }
-      },
-      add: function(objectStoreName, data, success, fail) {
-        db.open(function() {
-          var store, req, mode = 'readwrite';
-          store = db.getObjectStore(objectStoreName, mode),
-            req = store.add(data);
-          req.onsuccess = success;
-          req.onerror = fail;
-        }, fail);
-      }
-    };
-    return db;
-  }])
+        return db;
+    }]);
