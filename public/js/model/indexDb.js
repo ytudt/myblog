@@ -6,7 +6,7 @@ angular.module('indexdb', [])
         window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
         window.IDBCursor = window.IDBCursor || window.webkitIDBCursor || window.msIDBCursor;
         var db = {
-            dbName: 'dtdb',
+            dbName: 'macImDb',
             obj: {},
             dbInstance: {},
             errorHandler: function(error) {
@@ -28,9 +28,9 @@ angular.module('indexdb', [])
                 db.close();
             },
             // 创建数据表
-            createStore: function(storeInfo, indeInfo, callback) {
+            createStore: function(storeInfo, indexInfo, callback) {
                 db.obj.stname = storeInfo.stname;
-                db.obj.indeInfo = indeInfo;
+                db.obj.indexInfo = indexInfo;
                 //创建数据库
                 var version = db.getdbVeision();
                 // console.log(version);
@@ -56,9 +56,9 @@ angular.module('indexdb', [])
                                     autoIncrement: true
                                 });
                             // 如果创建数据表时传过来的索引信息不为空则创建索引
-                            if (db.obj.indeInfo && db.obj.indeInfo.length !== 0) {
-                                for (var i = 0; i < db.obj.indeInfo.length; i++) {
-                                    store.createIndex(db.obj.indeInfo[i].indexName, db.obj.indeInfo[i].index, { unique: false });
+                            if (db.obj.indexInfo && db.obj.indexInfo.length !== 0) {
+                                for (var i = 0; i < db.obj.indexInfo.length; i++) {
+                                    store.createIndex(db.obj.indexInfo[i].indexName, db.obj.indexInfo[i].index, { unique: false });
                                 }
                             }
 
@@ -67,11 +67,13 @@ angular.module('indexdb', [])
                     // 创建数据库成功事件
                     dbContent.onsuccess = function(e) {
                         db.dbInstance = dbContent.result;
+                        callback(true);
                         // db.dbInstance.onerror = null;
                         // console.log(db);
                     },
                     // 创建数据库成功事件
                     dbContent.onerror = function() {
+                        callback(false);
                         console.log(333);
                     }
                     // }
@@ -82,6 +84,7 @@ angular.module('indexdb', [])
                 var txn, store;
                 mode = mode || 'readonly';
                 txn = db.dbInstance.transaction([objectStoreName], mode);
+                // console.log(txn);
                 store = txn.objectStore(objectStoreName);
                 return store;
             },
@@ -101,9 +104,9 @@ angular.module('indexdb', [])
                             autoIncrement: true
                         });
                     // 如果创建数据表时传过来的索引信息不为空则创建索引
-                    if (db.obj.indeInfo && db.obj.indeInfo.length !== 0) {
-                        for (var i = 0; i < db.obj.indeInfo.length; i++) {
-                            store.createIndex(db.obj.indeInfo[i].indexName, db.obj.indeInfo[i].index, { unique: false });
+                    if (db.obj.indexInfo && db.obj.indexInfo.length !== 0) {
+                        for (var i = 0; i < db.obj.indexInfo.length; i++) {
+                            store.createIndex(db.obj.indexInfo[i].indexName, db.obj.indexInfo[i].index, { unique: false });
                         }
                     }
 
@@ -165,11 +168,17 @@ angular.module('indexdb', [])
                     var store = db.getObjectStore(objectStoreName),
                         req = store.get(id);
                     req.onsuccess = function(e) {
-                        callback(e.target.result)
-                            // console.log(e.target.result);
+                        if (!e.target.result) {
+                            return callback(null);
+                        }
+                        callback(e.target.result);
+
+                        // console.log(e.target.result);
 
                     };
-                    req.onerror = callback(false);
+                    req.onerror = function() {
+                        callback(false);
+                    };
                 });
 
             },
@@ -219,12 +228,13 @@ angular.module('indexdb', [])
             //     });
 
             // },
+            // 通过自己创建的索引查找数据(增加游标)
             selectDataByIndex: function(objectStoreName, indexName, searchData, callback) {
                 db.open(function() {
                     var store = db.getObjectStore(objectStoreName);
                     var index = store.index(indexName);
                     var data = [];
-                    var cursor = index.openCursor(IDBKeyRange.only(searchData))
+                    var cursor = index.openCursor(IDBKeyRange.only(searchData));
                     cursor.onsuccess = function(e) {
                             if (e.target.result) {
                                 var result = e.target.result.value;
@@ -233,7 +243,6 @@ angular.module('indexdb', [])
                                 data.push(result);
                                 // console.log(data);
                                 if (result && result !== null) {
-
                                     e.target.result.continue();
                                 } else {
 
@@ -250,8 +259,30 @@ angular.module('indexdb', [])
                 });
 
             },
+            // 根据id范围获取数据
+            selectDataByIdRange: function(objectStoreName,indexName, startId, endId,callback) {
+                db.open(function() {
+                        var store = db.getObjectStore(objectStoreName);
+                        var index = store.index(indexName);
+                        var boundKeyRange = IDBKeyRange.bound(startId, endId, false, true);
+                        var data=[];
+                        // req = store.get(id);
+                        index.openCursor(boundKeyRange).onsuccess = function(event) {
+                            var cursor = event.target.result;
+                            if (cursor) {
+                                // Do something with the matches.
+                                // console.log(cursor.value);
+                                data.push(cursor.value);
+                                cursor.continue();
+                            }else{
+                                callback(data);
+                            }
+
+                        }
+                });
+            },
             // 获得一个数据表的所有数据
-            getAll: function(objectStoreName, callback) {
+            selectAll: function(objectStoreName, callback) {
 
                 db.open(function() {
                     var
@@ -260,7 +291,6 @@ angular.module('indexdb', [])
                         data = [];
 
                     cursor.onsuccess = function(e) {
-                        console.log('getall');
                         var result = e.target.result;
                         if (result && result !== null) {
                             data.push(result.value);
@@ -273,7 +303,9 @@ angular.module('indexdb', [])
                         }
 
                     };
-                    cursor.onerror = callback(false);
+                    cursor.onerror = function() {
+                        callback(false);
+                    };
 
                 });
             },
@@ -283,30 +315,28 @@ angular.module('indexdb', [])
             //   db.open(dbName);
             // },
             // 删除某个数据表
-            deleteStore: function(objectStoreName) {
-              db.open(function(){
-                 // if (db.objectStoreNames.contains(objectStoreName)) {
-                    db.deleteObjectStore(objectStoreName);
-                 // }
-              });
+            // deleteStore: function(objectStoreName) {
+            //     db.open(function() {
+            //         // if (db.objectStoreNames.contains(objectStoreName)) {
+            //         db.deleteObjectStore(objectStoreName);
+            //         // }
+            //     });
 
-            },
+            // },
             deleteAllStore: function(objectStoreName, success, fail) {
 
             },
-              // 删除某个数据库
-            deleteDB(dbName) {
-                indexedDB.deleteDatabase(dbName);
-            },
+            // 删除某个数据库
+            // deleteDB(dbName) {
+            //     indexedDB.deleteDatabase(dbName);
+            // },
             // 获得数据库当前版本
             getdbVeision: function() {
                 var dbVersion = parseInt(localStorage.getItem("dbVersion")) || 1;
                 dbVersion++;
                 localStorage.setItem("dbVersion", dbVersion);
                 return dbVersion;
-
             }
-
         };
         return db;
     }]);
