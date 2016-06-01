@@ -18,6 +18,7 @@
         <script src='./js/controllers/01.js'></script>
         <script src='./js/controllers/registerCtr.js'></script>
         <script src='./js/service/register.js'></script>
+        <script src='./js/directive/myDrective.js'></script>
     </head>
     <body ng-app='myApp'>
     <div id="indexWrap" class=".container">
