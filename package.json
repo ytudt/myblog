@@ -13,6 +13,8 @@
     "debug": "~2.2.0",
     "express": "~4.13.1",
     "log4js": "^0.6.36",
+    "mongodb": "^2.1.21",
+    "mongoose": "^4.4.19",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
     "ui-router": "~1.0.0-alpha.3",

@@ -8,7 +8,7 @@ angular.module('register', ['register.service', 'indexdb'])
             //       console.log(data);
             // })
             //2.往某个表添加数据indexDbJs.add(objectStoreName, data, callback)
-            // indexDbJs.add('addressstorex', [
+            // indexDbJs.add('addressstorex2111',[], [
             // {
             //      userName:'dt',
             //      age:18
@@ -60,6 +60,19 @@ angular.module('register', ['register.service', 'indexdb'])
             // indexDbJs.selectDataByIdRange('addressstorex','f_id',80,100,function(data){
             //       console.log(data);
             // });
+            //
+            indexDbJs.CreateStores([{
+                stname:5
+            },{
+                stname:6
+            },{
+                stname:7
+            },{
+                stname:8
+            }],[[],[],[],[]], function(data) {
+                console.log(data);
+
+            });
 
         }
     }]);

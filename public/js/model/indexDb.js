@@ -29,6 +29,7 @@ angular.module('indexdb', [])
             },
             // 创建数据表
             createStore: function(storeInfo, indexInfo, callback) {
+
                 db.obj.stname = storeInfo.stname;
                 db.obj.indexInfo = indexInfo;
                 //创建数据库
@@ -62,21 +63,94 @@ angular.module('indexdb', [])
                                 }
                             }
 
+                        } else {
+                            callback(false);
+                            // db.closeDB('macImDb');
                         }
                     },
                     // 创建数据库成功事件
                     dbContent.onsuccess = function(e) {
                         db.dbInstance = dbContent.result;
                         callback(true);
+
+                        // db.closeDB('macImDb');
                         // db.dbInstance.onerror = null;
                         // console.log(db);
                     },
                     // 创建数据库成功事件
                     dbContent.onerror = function() {
                         callback(false);
+                        // db.closeDB('macImDb');
                         console.log(333);
                     }
                     // }
+
+            },
+            CreateStores: function(storeInfo, indexInfo, callback) {
+                // db.obj.stname = storeInfo.stname;
+                db.obj.indexInfo = indexInfo;
+                var count = 0;
+                //创建数据库
+                var version = db.getdbVeision();
+                // console.log(version);
+                // var req = window.indexedDB.open(db.dbName);
+                // req.onsuccess = function(e) {
+                // var version = e.target.result.version;
+                var dbContent = window.indexedDB.open(db.dbName, version);
+                // console.log(dbContent.getVesdion)
+                // 判断数据库版本号是否更新``
+                // dbContent.onupgradeneeded = db.upgrade;
+                dbContent.onupgradeneeded = function(e) {
+                        console.log('更新了');
+                        var _db = e.target.result,
+                            names = _db.objectStoreNames;
+                        // 此处可以创建多个表
+                        // var arr = ['dtt1', 'dttt2', 'dttt3'];
+                        for (var i = 0; i < storeInfo.length; i++) {
+                            var name = storeInfo[i].stname;
+                            if (!names.contains(name)) {
+                                var store = _db.createObjectStore(
+                                    name, {
+                                        keyPath: 'id',
+                                        autoIncrement: true
+                                    });
+                                // 如果创建数据表时传过来的索引信息不为空则创建索引
+                                if (db.obj.indexInfo[i] && db.obj.indexInfo[i].length !== 0) {
+                                    for (var j = 0; j < db.obj.indexInfo[i].length; j++) {
+                                        store.createIndex(db.obj.indexInfo[i][j].indexName, db.obj.indexInfo[i][j].index, { unique: false });
+                                    }
+                                    count++;
+
+                                }
+
+                            } else {
+                                // callback(true);
+                                // db.closeDB('macImDb');
+                            }
+                        }
+                        if (count >= storeInfo.length) {
+                            callback(true);
+                        }
+
+
+                    },
+                    // 创建数据库成功事件
+                    dbContent.onsuccess = function(e) {
+                        db.dbInstance = dbContent.result;
+                        callback(true);
+
+                        // db.closeDB('macImDb');
+                        // db.dbInstance.onerror = null;
+                        // console.log(db);
+                    },
+                    // 创建数据库成功事件
+                    dbContent.onerror = function() {
+                        callback(false);
+                        // db.closeDB('macImDb');
+                        console.log(333);
+                    }
+                    // }
+
 
             },
             // 获得数据表
@@ -112,33 +186,101 @@ angular.module('indexdb', [])
 
                 }
             },
-            // 添加数据
-            add: function(objectStoreName, data, callback) {
-                // 如果此处是数组在此函数内部循环，而不是循环调用add函数是否会快点。
-                db.open(function() {
-                    var store, req, mode = 'readwrite';
-                    var addNum = 0;
-                    store = db.getObjectStore(objectStoreName, mode);
-                    for (var i = 0; i < data.length; i++) {
-                        var req = store.add(data[i]);
-                        req.onsuccess = function() {
-                            addNum++;
-                            if (addNum >= data.length) {
-                                callback(true);
+            // 添加数据（发现没有表则创建表）
+            // add: function(objectStoreName,indexInfo, data,  callback) {
+            //     db.createStore({ stname: objectStoreName }, indexInfo, function(result) {
+            //         if (result === true) {
+            //             // 如果此处是数组在此函数内部循环，而不是循环调用add函数是否会快点。
+            //             db.open(function() {
+            //                 var store, req, mode = 'readwrite';
+            //                 var addNum = 0;
+            //                 store = db.getObjectStore(objectStoreName, mode);
+            //                 console.log(store);
+            //                 for (var i = 0; i < data.length; i++) {
+            //                     var req = store.add(data[i]);
+            //                     req.onsuccess = function() {
+            //                         addNum++;
+            //                         if (addNum >= data.length) {
+            //                             callback(true);
+            //                         }
+            //                     };
+            //                     req.onerror = function() {
+            //                         callback(false);
+            //                     };
+            //                 }
+            //                 //     req = store.add(data);
+            //                 // req.onsuccess = function() {
+            //                 //     console.log('add');
+            //                 // };
+            //                 // req.onerror = fail;
+            //             });
+            //         }
+            //     });
+            // },
+            // 添加数据（发现没有表则创建表)
+            add: function(type, userId, objectStoreName, indexInfo, data, callback) {
+                if (type !== null) {
+                    objectStoreName = type + userId;
+                }
+                db.createStore({ stname: objectStoreName }, indexInfo, function(result) {
+                    if (result === true) {
+                        // 如果此处是数组在此函数内部循环，而不是循环调用add函数是否会快点。
+                        db.open(function() {
+                            var store, req, mode = 'readwrite';
+                            var addNum = 0;
+                            store = db.getObjectStore(objectStoreName, mode);
+                            for (var i = 0; i < data.length; i++) {
+                                var req = store.add(data[i]);
+                                req.onsuccess = function() {
+                                    addNum++;
+                                    if (addNum >= data.length) {
+                                        callback(true);
+                                    }
+                                };
+                                req.onerror = function() {
+                                    callback(false);
+                                };
                             }
-                        };
-                        req.onerror = function() {
-                            callback(false);
-                        };
+                            //     req = store.add(data);
+                            // req.onsuccess = function() {
+                            //     console.log('add');
+                            // };
+                            // req.onerror = fail;
+                        });
                     }
-                    //     req = store.add(data);
-                    // req.onsuccess = function() {
-                    //     console.log('add');
-                    // };
-                    // req.onerror = fail;
                 });
-
             },
+
+            // add: function(objectStoreName, indexInfo, data, callback) {
+            //     db.createStore({ stname: objectStoreName }, indexInfo, function(result) {
+            //         if (result === true) {
+            //             // 如果此处是数组在此函数内部循环，而不是循环调用add函数是否会快点。
+            //             db.open(function() {
+            //                 var store, req, mode = 'readwrite';
+            //                 var addNum = 0;
+            //                 store = db.getObjectStore(objectStoreName, mode);
+            //                 for (var i = 0; i < data.length; i++) {
+            //                     var req = store.add(data[i]);
+            //                     req.onsuccess = function() {
+            //                         addNum++;
+            //                         if (addNum >= data.length) {
+            //                             callback(true);
+            //                         }
+            //                     };
+            //                     req.onerror = function() {
+            //                         callback(false);
+            //                     };
+            //                 }
+            //                 //     req = store.add(data);
+            //                 // req.onsuccess = function() {
+            //                 //     console.log('add');
+            //                 // };
+            //                 // req.onerror = fail;
+            //             });
+            //         }
+            //     });
+            // },
+
             //更新数据表
             update: function(objectStoreName, data, callback) {
                 db.open(function() {
@@ -260,25 +402,25 @@ angular.module('indexdb', [])
 
             },
             // 根据id范围获取数据
-            selectDataByIdRange: function(objectStoreName,indexName, startId, endId,callback) {
+            selectDataByIdRange: function(objectStoreName, indexName, startId, endId, callback) {
                 db.open(function() {
-                        var store = db.getObjectStore(objectStoreName);
-                        var index = store.index(indexName);
-                        var boundKeyRange = IDBKeyRange.bound(startId, endId, false, true);
-                        var data=[];
-                        // req = store.get(id);
-                        index.openCursor(boundKeyRange).onsuccess = function(event) {
-                            var cursor = event.target.result;
-                            if (cursor) {
-                                // Do something with the matches.
-                                // console.log(cursor.value);
-                                data.push(cursor.value);
-                                cursor.continue();
-                            }else{
-                                callback(data);
-                            }
-
+                    var store = db.getObjectStore(objectStoreName);
+                    var index = store.index(indexName);
+                    var boundKeyRange = IDBKeyRange.bound(startId, endId, false, true);
+                    var data = [];
+                    // req = store.get(id);
+                    index.openCursor(boundKeyRange).onsuccess = function(event) {
+                        var cursor = event.target.result;
+                        if (cursor) {
+                            // Do something with the matches.
+                            // console.log(cursor.value);
+                            data.push(cursor.value);
+                            cursor.continue();
+                        } else {
+                            callback(data);
                         }
+
+                    }
                 });
             },
             // 获得一个数据表的所有数据
