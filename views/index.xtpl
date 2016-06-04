@@ -17,6 +17,7 @@
         <script src='./js/router.js'></script>
         <script src='./js/controllers/01.js'></script>
         <script src='./js/controllers/registerCtr.js'></script>
+        <script src='./js/controllers/nodejsCtr.js'></script>
         <script src='./js/service/register.js'></script>
         <script src='./js/directive/myDrective.js'></script>
     </head>

@@ -1,5 +1,35 @@
 <div>
-     <div>
-         <h1>nodejs</h1>
-     </div>
+  <div>
+    <h1>nodejs</h1>
+  </div>
 </div>
+<hello-word></hello-word>
+<load-data howToLoad='loadData()'>111</load-data>
+<super-man strength>1</super-man>
+<super-man strength speed>2</super-man>
+<super-man strength speed light>3</super-man>
+<hello></hello>
+<hello></hello>
+<hello></hello>
+<hello></hello>
+<!-- @ 绑定 -->
+<!-- <drink flavor="{{ctrlFlavor}}"></drink> -->
+<!-- = 双向绑定 -->
+<!-- <input type="text" ng-model="ctrlFlavor">
+<drink flavor="ctrlFlavor"></drink> -->
+<!-- & 绑定 -->
+<!-- <greeting greet='sayHello(name)'></greeting>
+<greeting greet='sayHello(name)'></greeting>
+<greeting greet='sayHello(name)'></greeting> -->
+<!-- scope为false -->
+<!-- <input type="text" ng-model="name" >
+<scope-flase><scope-flase> -->
+<!-- scope为true -->
+<!-- <input type="text" ng-model="age" >
+<scope-true><scope-true> -->
+<!-- 命名规则 -->
+<div class="my-info">我的名字是：<span ng-bind="name"></span>
+  <br/>我的年龄是：<span ng-bind="age"></span>
+  <br />
+</div>
+<div class="my-directive" my-directive my-name="{{name}}" age="age" change-my-age="changeAge()"></div>
