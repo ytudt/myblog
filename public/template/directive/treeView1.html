@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<ul class="tree-view">
+<style>
+
+  li {
+    margin-left: 10px;
+    position: relative;
+    list-style: none;
+  }
+</style>
+       <li ng-repeat="item in treeData| filter:{id:1}" ng-include="'../template/directive/treeItem1.html'" >111</li>
+       <!-- <li ng-repeat="item in treeData" >{{item.name}}</li> -->
+</ul>

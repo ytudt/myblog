@@ -3,7 +3,7 @@
     <h1>nodejs</h1>
   </div>
 </div>
-<hello-word></hello-word>
+<!-- <hello-word></hello-word>
 <load-data howToLoad='loadData()'>111</load-data>
 <super-man strength>1</super-man>
 <super-man strength speed>2</super-man>
@@ -11,7 +11,7 @@
 <hello></hello>
 <hello></hello>
 <hello></hello>
-<hello></hello>
+<hello></hello> -->
 <!-- @ 绑定 -->
 <!-- <drink flavor="{{ctrlFlavor}}"></drink> -->
 <!-- = 双向绑定 -->
@@ -28,8 +28,19 @@
 <!-- <input type="text" ng-model="age" >
 <scope-true><scope-true> -->
 <!-- 命名规则 -->
-<div class="my-info">我的名字是：<span ng-bind="name"></span>
+<!-- <div class="my-info">我的名字是：<span ng-bind="name"></span>
   <br/>我的年龄是：<span ng-bind="age"></span>
   <br />
 </div>
-<div class="my-directive" my-directive my-name="{{name}}" age="age" change-my-age="changeAge()"></div>
+<div class="my-directive" my-directive my-name="{{name}}" age="age" change-my-age="changeAge()"></div> -->
+
+<!-- <my-tree></my-tree> -->
+<!-- as a Dom element -->
+<treecontrol class="tree-classic"
+   tree-model="dataForTheTree"
+   options="treeOptions"
+   on-selection="showSelected(node)"
+   selected-node="node1">
+   employee: {{node.name}} age {{node.age}}
+</treecontrol>
+

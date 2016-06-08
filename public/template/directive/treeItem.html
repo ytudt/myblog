@@ -1,0 +1,29 @@
+<style>
+  .expand,
+  .disexpand{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    position: absolute;
+    left: -16px;
+    top:4px;
+  }
+  .disexpand{
+     background-color: blue;
+  }
+</style>
+
+<i ng-click="itemExpended(item, $event);" } >
+  <span class="expand" ng-show="!item.$$isExpend"></span>
+  <span class="disexpand" ng-show="item.$$isExpend"></span>
+</i>
+<!-- <input type="checkbox" ng-model="item.$$isChecked" class="check-box" ng-if="canChecked" ng-change="warpCallback('itemCheckedChanged', item, $event)"> -->
+
+<!-- <span class='text-field' ng-click="warpCallback('itemClicked', item, $event);"></span> -->
+<span>{{item.name}}</span>
+<ul ng-if="!isLeaf(item)" ng-show="item.$$isExpend">
+
+   <li ng-repeat="item in item.children" ng-include="'../template/directive/treeItem.html'">
+   </li>
+</ul>

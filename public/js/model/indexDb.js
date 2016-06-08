@@ -474,10 +474,10 @@ angular.module('indexdb', [])
             // },
             // 获得数据库当前版本
             getdbVeision: function() {
-                var dbVersion = parseInt(localStorage.getItem("dbVersion")) || 1;
-                dbVersion++;
-                localStorage.setItem("dbVersion", dbVersion);
-                return dbVersion;
+                // var dbVersion = parseInt(localStorage.getItem("dbVersion")) || 1;
+                // dbVersion++;
+                // localStorage.setItem("dbVersion", dbVersion);
+                return +new Date();
             }
         };
         return db;

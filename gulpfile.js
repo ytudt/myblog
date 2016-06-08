@@ -11,7 +11,8 @@ gulp.task('copyJs', function () {
     'bower_components/angular-ui-router/release/angular-ui-router.js',
     'bower_components/angular-touch/angular-touch.min.js',
     'bower_components/angular-animate/angular-animate.min.js',
-    'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js'
+    'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
+    'bower_components/angular-tree-control/angular-tree-control.js'
     ])
     .pipe(gulp.dest('public/js/lib'));
 });
@@ -19,7 +20,9 @@ gulp.task('copyJs', function () {
 gulp.task('copyCss', function () {
   return gulp.src([
     'bower_components/angular-bootstrap/ui-bootstrap-csp.css',
-    'bower_components/bootstrap/dist/css/bootstrap.min.css'
+    'bower_components/bootstrap/dist/css/bootstrap.min.css',
+    'bower_components/angular-tree-control/css/tree-control-attribute.css',
+    'bower_components/angular-tree-control/css/tree-control.css',
     ])
     .pipe(gulp.dest('public/css/lib'));
 });
