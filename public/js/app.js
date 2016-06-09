@@ -6,7 +6,7 @@
 // * @Last Modified time: 2016-06-07 11:06:57
 
 
-angular.module('myApp', ['ui.router','router','ui.bootstrap','demo','indexdb','drective.tree'])
+angular.module('myApp', ['ui.router','router','ui.bootstrap','demo','indexdb','drective.tree','config'])
   .config(function($stateProvider, $urlRouterProvider) {
     var a={
       add:function(a,b){

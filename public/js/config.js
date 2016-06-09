@@ -6,6 +6,6 @@
 */
 
 angular.module('config',[])
-.constant("global",{
+.constant("GlobalVariable",{
   'SERVEI_PATH':'127.0.0.1:3000'
 })

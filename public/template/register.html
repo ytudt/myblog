@@ -1,25 +1,30 @@
 <div id="register" class="container">
   <div class="row">
-    <form role="form">
+    <form role="form" name="registerForm" ng-submit="save()">
       <div class="form-group">
         <label for="InputEmail1" >邮箱</label>
-        <input type="email" class="form-control" id="InputEmail1" placeholder="请输入邮箱..." ng-model="email">
+        <input type="email" name="_email" class="form-control" id="InputEmail1" placeholder="请输入邮箱..." ng-model="email" required>
+        <span ng-show="registerForm._email.$error.required">邮箱不能为空</span>
+        <span ng-show="registerForm._email.$error.email">请输入正确格式邮箱</span>
       </div>
          <div class="form-group">
         <label for="InputUsername">用户名</label>
-        <input type="text" class="form-control" id="InputUsername" placeholder="请输入用户名" ng-model="userName">
+        <input type="text" class="form-control" name="InputUsername" id="InputUsername" placeholder="请输入用户名" ng-model="userName" ng-pattern="/^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){5,17}$/" required>
+         <span ng-show="registerForm.InputUsername.$invalid">6-18位字母数字下划线(字母开头)</span>
       </div>
       <div class="form-group">
         <label for="InputPassword1">密码</label>
-        <input type="password" class="form-control" id="InputPassword1" placeholder="请输入密码..." ng-model="psd">
+        <input type="password" class="form-control" name="InputPassword1" id="InputPassword1" placeholder="请输入密码..." ng-model="psd" ng-pattern="/^([a-zA-Z0-9]|[._]){6,18}$/" required>
+         <span ng-show="registerForm.InputPassword1.$invalid">6-18位字母数字下划线</span>
       </div>
          <div class="form-group">
         <label for="InputPassword2">确认密码</label>
-        <input type="password" class="form-control" id="InputPassword2" placeholder="请再次输入密码..." ng-model="repsd">
+        <input type="password" class="form-control" name="InputPassword2" id="InputPassword2" placeholder="请再次输入密码..." ng-model="repsd" ng-change="confirPassword()" ng-pattern="/^([a-zA-Z0-9]|[._]){6,18}$/" required>
+         <span ng-show="registerForm.InputPassword2.$invalid">6-18位字母数字下划线</span>
+         <span ng-if="registerForm.InputPassword2.$valid" ng-hide="passwordSame">两次密码不一致</span>
       </div>
-      <!-- <crud-buttons></crudb-buttons> -->
-
-      <button type="submit" class="btn btn-primary" ng-click="submit()">注册</button>
+      <input type="submit" class="btn btn-primary" ng-disabled="registerForm.$invalid||!passwordSame" value="注册">
     </form>
   </div>
 </div>
+

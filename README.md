@@ -19,11 +19,16 @@
   - routes node路由文件夹
   - public 静态文件
      + css 全局样式文件夹
-       - lib 前台需要的css库 
+       - lib 前台需要的css库
      + js 全局js文件夹
        - lib 前台需要的库
      + images 静态图片文件夹
 
 
 注意:通过npm下载的gulp包有问题，此处在以前的工程中复制过来可以使用。
+## 创建数据库
+使用前需要到cmd下创建本项目用到的数据库及数据集合（类似mysql的表）
+1.use myblog
+db.createCollection("users") 用户信息表
+db.createCollection("articles") 文章表
 

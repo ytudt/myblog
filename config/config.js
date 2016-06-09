@@ -10,5 +10,6 @@
 module.exports={
   isDev:true,
   ipAdd:'127.0.0.1',
-  port:3000
+  port:3000,
+  db:db: 'mongodb://127.0.0.1/myblog',
 }
