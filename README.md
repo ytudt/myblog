@@ -29,6 +29,6 @@
 ## 创建数据库
 使用前需要到cmd下创建本项目用到的数据库及数据集合（类似mysql的表）
 1.use myblog
-db.createCollection("users") 用户信息表
-db.createCollection("articles") 文章表
+- db.createCollection("users") 用户信息表
+- db.createCollection("articles") 文章表
 

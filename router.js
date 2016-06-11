@@ -13,8 +13,11 @@ const express = require('express');
 
 const router = express.Router();
 
-const indexController=require('./controller/index');
+const indexController=require('./controller/index.js');
+const userController=require('./controller/user.js');
 
 router.get('/',indexController.showIndex);
+router.post('/doRegister',userController.signUp);
+// 127.0.0.1:3000/doRegister
 
 module.exports=router;

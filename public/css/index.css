@@ -48,3 +48,17 @@ tab栏
 /*
 登录页
 */
+
+
+/*
+注册页
+*/
+#register .registerMsg{
+  display:inline-block;
+  height: 40px;
+  width: 300px;
+  text-align: center;
+  background-color: #ccc;
+  color:red;
+  line-height: 40px;
+}

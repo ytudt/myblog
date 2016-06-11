@@ -23,6 +23,7 @@
          <span ng-show="registerForm.InputPassword2.$invalid">6-18位字母数字下划线</span>
          <span ng-if="registerForm.InputPassword2.$valid" ng-hide="passwordSame">两次密码不一致</span>
       </div>
+      <div class="registerMsg" ng-show="receiveMsg">{{registerMsg}}</div></br>
       <input type="submit" class="btn btn-primary" ng-disabled="registerForm.$invalid||!passwordSame" value="注册">
     </form>
   </div>
