@@ -10,21 +10,28 @@
 
         <link rel="stylesheet" href="./css/common.css">
         <link rel="stylesheet" href="./css/index.css">
-
+       {{!-- 库文件 --!}}
         <script src='./js/lib/angular.js'></script>
         <script src='./js/lib/angular-ui-router.js'></script>
         <script src='./js/lib/ui-bootstrap-tpls.min.js'></script>
         <script src='./js/lib/angular-tree-control.js'></script>
+       {{!-- 公用文件 --!}}
         <script src='./js/app.js'></script>
-        <script src='./js/config.js'></script>
-        <script src='./js/controllers/registerCtr.js'></script>
-        <script src='./js/model/indexDb.js'></script>
         <script src='./js/router.js'></script>
-        <script src='./js/controllers/01.js'></script>
-        <script src='./js/controllers/registerCtr.js'></script>
-        <script src='./js/controllers/nodejsCtr.js'></script>
-        <script src='./js/service/register.js'></script>
+        <script src='./js/config.js'></script>
+        <script src='./js/model/indexDb.js'></script>
+          {{!-- 指令 --!}}
         <script src='./js/directive/myDrective.js'></script>
+       {{!-- 注册模块 --!}}
+        <script src='./js/controllers/registerCtr.js'></script>
+        <script src='./js/service/register.js'></script>
+          {{!-- 登录模块 --!}}
+        <script src='./js/controllers/loginCtr.js'></script>
+        <script src='./js/service/login.js'></script>
+           {{!-- nodejs模块 --!}}
+        <script src='./js/controllers/nodejsCtr.js'></script>
+        <script src='./js/controllers/01.js'></script>
+
     </head>
     <body ng-app='myApp'>
     <div id="indexWrap" class=".container">

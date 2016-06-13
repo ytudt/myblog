@@ -1,4 +1,4 @@
-angular.module('register', ['register.service', 'indexdb'])
+angular.module('registe.controller', ['register.service', 'indexdb'])
   .controller('registerCtr', ['$scope', '$state', 'indexDbJs',
     'registerFty',
     function($scope, $state, indexDbJs, registerFty) {
@@ -14,7 +14,6 @@ angular.module('register', ['register.service', 'indexdb'])
       }
 
       $scope.save = function() {
-
         var message = 'lologinname=' + $scope.userName + '&passWord=' + $scope.psd + '&email=' + $scope.email;
         var promise = registerFty.doRegister(message);
         promise.then(function(data) {

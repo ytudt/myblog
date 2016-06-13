@@ -1,4 +1,4 @@
-angular.module('nodejs', ['treeControl'])
+angular.module('nodejs.controller', ['treeControl'])
   .controller('nodejsCtr', ['$scope', function($scope) {
     console.log(1111);
     // $scope.loadData = function() {

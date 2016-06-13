@@ -36,3 +36,9 @@ exports.signUp = function(req, res, next) {
 
 
 }
+exports.signIn=function(req, res, next){
+ let lologinname = req.body.lologinname || '';
+  let passWord = req.body.passWord || 0;
+  console.log(lologinname);
+  console.log(passWord);
+}

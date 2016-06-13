@@ -18,6 +18,7 @@ const userController=require('./controller/user.js');
 
 router.get('/',indexController.showIndex);
 router.post('/doRegister',userController.signUp);
+router.post('/doLogin',userController.signIn);
 // 127.0.0.1:3000/doRegister
 
 module.exports=router;
