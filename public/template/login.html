@@ -11,6 +11,7 @@
         <input type="password" class="form-control" name="InputPassword1" id="InputPassword1" placeholder="请输入密码..." ng-model="psd" ng-pattern="/^([a-zA-Z0-9]|[._]){6,18}$/" required>
         <span ng-show="loginForm.InputPassword1.$invalid">6-18位字母数字下划线</span>
       </div>
+          <div class="registerMsg" ng-show="receiveMsg">{{registerMsg}}</div></br>
        <input type="submit" class="btn btn-primary" ng-disabled="loginForm.$invalid" value="登录">
     </form>
   </div>

@@ -1,14 +1,28 @@
 'use strict'
-const models  = require('../db');
-const User    = models.User;
+const models = require('../db');
+const User = models.User;
+const Q = require('q');
 
 // 添加一个用户
-exports.newAndSave = function (loginname, pass, email,  callback) {
-  let user         = new User();
-  user.loginname   = loginname;
-  user.pass        = pass;
-  user.email       = email;
+let newAndSave = function(loginname, passWord, email, callback) {
+  let user = new User();
+  user.loginname = loginname;
+  user.passWord = passWord;
+  user.email = email;
   user.save(callback);
+};
+// q封装版添加用户
+exports.qNewAndSave = function(lologinname, passWord, email) {
+  var defer = Q.defer();
+  newAndSave(lologinname, passWord, email, function(error, data) {
+    if (!error) {
+      defer.resolve(data);
+    } else {
+
+      defer.reject(err);
+    }
+  });
+  return defer.promise;
 };
 
 /**
@@ -19,9 +33,25 @@ exports.newAndSave = function (loginname, pass, email,  callback) {
  * @param {String} loginname 登录名
  * @param {Function} callback 回调函数
  */
-exports.getUserByloginname = function (loginname, callback) {
-  console.log(loginname+111);
-  User.findOne({loginname: loginname}, callback);
+ let getUserByloginname=function(loginname, callback) {
+  User.findOne({ loginname: loginname }, callback);
+};
+var obj={
+  name:'dt'
+}
+// 用q封装版根据登录名查找用户
+exports.qGetUserByloginname = function(lologinname) {
+  var defer = Q.defer();
+  getUserByloginname(lologinname, function(error, data) {
+    // console.log('第一步的数据'+data)
+    // console.log(error)
+    if (!error) {
+      defer.resolve(data);
+    } else {
+      defer.reject(err);
+    }
+  });
+  return defer.promise;
 };
 
 /**
@@ -32,11 +62,11 @@ exports.getUserByloginname = function (loginname, callback) {
  * @param {String} id 用户ID
  * @param {Function} callback 回调函数
  */
-exports.getUserById = function (id, callback) {
+exports.getUserById = function(id, callback) {
   if (!id) {
     return callback();
   }
-  User.findOne({_id: id}, callback);
+  User.findOne({ _id: id }, callback);
 };
 
 /**
@@ -47,8 +77,18 @@ exports.getUserById = function (id, callback) {
  * @param {String} email 邮箱地址
  * @param {Function} callback 回调函数
  */
-exports.getUserByMail = function (email, callback) {
-  User.findOne({email: email}, callback);
+let getUserByMail = function(email, callback) {
+  User.findOne({ email: email }, callback);
 };
-
-
+// q封装版
+exports.qGetUserByMail = function(email) {
+  var defer = Q.defer();
+  getUserByMail(email, function(error, data) {
+    if (!error) {
+      defer.resolve(data);
+    } else {
+      defer.reject(err);
+    }
+  });
+  return defer.promise;
+};
