@@ -1,19 +1,21 @@
-#indexWrap{
-  width:100%;
+#indexWrap {
+  width: 100%;
   margin: 0 auto;
-
 }
+
 
 /*
 tab栏
 */
-#tab{
+
+#tab {
   width: 100%;
   height: 50px;
   background: #222222;
-  padding:0 100px;
+  padding: 0 100px;
 }
-#tab h1{
+
+#tab h1 {
   display: inline-block;
   color: #fff;
   margin-left: 20px;
@@ -22,29 +24,135 @@ tab栏
   padding-left: 60px;
   cursor: pointer;
 }
-#tab .logo{
-  background:url('../image/logo.png') no-repeat left;
+
+#tab .logo {
+  background: url('../image/logo.png') no-repeat left;
 }
-#tab div span a{
-  color:#ddd;
+
+#tab div span a {
+  color: #ddd;
   font-size: 20px;
   line-height: 50px;
   margin-left: 10px;
-   text-decoration: none;
-}
-#tab div span a:hover{
-   color:#fff;
+  text-decoration: none;
 }
 
-#register,#login{
-  margin:0 auto;
+#tab div span a:hover {
+  color: #fff;
 }
+
+.modal-content {
+  padding: 10px;
+}
+
+.modifyAvatar {
+  margin-left: 10px;
+}
+
+.modal-footer {
+  text-align: center;
+}
+
+#result img {
+  max-width: 300px;
+}
+.filename{
+  width: 300px;
+  height: 30px;
+  line-height: 30px;
+  position: relative;
+  top:-10px;
+  left:4px;
+}
+.fileWrap {
+  display:inline-block;
+  background:#efefef;
+  border: 1px solid #ccc;
+  width: 50px;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  // position: raletive;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  // display: inline-block;
+  color:#333;
+}
+
+.fileWrap #input_file {
+  width: 50px;
+  height: 30px;
+  display:inline-block;
+  float: left;
+  // z-index: -1;
+  position: absolute;
+   left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+// 注册页
+#register,
+#login {
+  margin: 0 auto;
+}
+
 #register form input,
-#login form input
-{
-  width:300px;
-
+#login form input {
+  width: 300px;
 }
+
+#tab .slidedown {
+  // color:#fff;
+  position: relative;
+  display: inline-block;
+  // margin-right: 10px;
+  width: 300px;
+  height: 50px;
+  // text-align: right;
+}
+
+#tab .slidedown a {
+  position: absolute;
+  display: inline-block;
+  width: 300px; //
+  //  color:fff;
+  // // padding:0 10px;
+  // text-align: right;
+}
+
+#tab .set {
+  color: #333;
+  background: #fff;
+  display: inline-block;
+  width: 100px;
+  position: relative;
+  top: 50px;
+  left: 60px;
+}
+
+#tab #simple-dropdown i {
+  color: blue;
+}
+
+#tab .dropdown {
+  margin-right: 50px;
+}
+
+#tab .dropdown li {
+  color: #333;
+}
+
+#tab .dropdown li a {
+  color: #333;
+}
+
+#tab .dropdown li:hover a {
+  color: #333;
+}
+
+
 /*
 登录页
 */
@@ -53,12 +161,13 @@ tab栏
 /*
 注册页
 */
-#register .registerMsg{
-  display:inline-block;
+
+#register .registerMsg {
+  display: inline-block;
   height: 40px;
   width: 300px;
   text-align: center;
   background-color: #ccc;
-  color:red;
+  color: red;
   line-height: 40px;
 }

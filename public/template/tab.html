@@ -7,11 +7,57 @@
       <span style="width:100px" ui-sref=".nodejs"><a href="">node</a></span>
     </div>
     <div class="fr">
-      <span style="width:100px" ui-sref=".register"><a href="">注册</a></span>
-      <span style="width:100px" ui-sref=".login"><a href="">登录</a></span>
+      <span style="width:100px" ui-sref=".register" ng-hide="!userInfo"><a href="">注册</a></span>
+      <span style="width:100px" ui-sref=".login" ng-hide="!userInfo"><a href="">登录</a></span>
+      <span uib-dropdown on-toggle="toggled(open)">
+      <a href id="simple-dropdown" uib-dropdown-toggle>
+        您好,<i>错{{userInfo.userName}}</i>
+      </a>
+      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+    <li role="menuitem"><a href="#"  >我</a></li>
+
+    <li role="menuitem" ng-click="open()"><a href="#">设置</a></li>
+     <li class="divider"></li>
+    <li role="menuitem"><a href="#">退出登录</a></li>
+  </ul>
+    </span>
     </div>
   </div>
   <div>
     <div ui-view="" />
   </div>
 </div>
+<script type="text/ng-template" id="myModalContent.html">
+  <form role="form" name="modifyForm" ng-submit="save()" class="clearfix">
+    <div class="fl">
+      <div class="form-group">
+        <label for="InputPassword1">修改密码</label>
+        <input type="password" class="form-control" name="InputPassword1" id="InputPassword1" placeholder="请输入密码..." ng-model="psd" ng-change="modifyPassword()" ng-pattern="/^([a-zA-Z0-9]|[._]){6,18}$/" >
+        <span ng-show="modifyForm.InputPassword1.$invalid">6-18位字母数字下划线</span>
+      </div>
+      <div class="form-group">
+        <label for="InputPassword2">确认密码</label>
+        <input type="password" class="form-control" name="InputPassword2" id="InputPassword2" placeholder="请再次输入密码..." ng-model="repsd" ng-change="modifyPassword()" ng-pattern="/^([a-zA-Z0-9]|[._]){6,18}$/" >
+        <span ng-show="modifyForm.InputPassword2.$invalid">6-18位字母数字下划线</span>
+        <span ng-if="modifyForm.InputPassword2.$valid" ng-hide="passwordSame">两次密码不一致</span>
+      </div>
+    </div>
+    <div class="fl modifyAvatar">
+    <label for="InputPassword2">修改头像</label></br>
+    <span id=result></span>
+      <!-- <img src="./defaltAvatar.png" alt="" id='avatarImg'> -->
+      <!-- <input type="file"  ng-change="changeAvatar()"> -->
+        <input class="filename" type="text" readonly="readonly" />
+      <a href=" javascript:;" class="fileWrap">
+           <input type="file" ng-model="file" ng-change="changeAvatar()"  id="input_file">浏览
+      </a>
+
+    </div>
+    <div class="registerMsg" ng-show="receiveMsg">{{registerMsg}}</div>
+    </br>
+  </form>
+  <div class="modal-footer">
+    <input type="submit" class="btn btn-primary" ng-disabled="modifyForm.$invalid||!passwordSame" value="确认">
+    <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+  </div>
+</script>

@@ -42,7 +42,7 @@ exports.signUp = function(req, res, next) {
     });
 
 }
-
+// 登录
 exports.signIn = function(req, res, next) {
   let lologinname = req.body.lologinname || '';
   let passWord = Tools.md5(req.body.passWord || 0);
@@ -66,5 +66,5 @@ exports.signIn = function(req, res, next) {
           msg: 'success'
         });
       }
-    })
+    });
 }

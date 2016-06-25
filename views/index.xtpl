@@ -22,6 +22,8 @@
         <script src='./js/model/indexDb.js'></script>
           {{!-- 指令 --!}}
         <script src='./js/directive/myDrective.js'></script>
+        {{!-- tab栏 --!}}
+           <script src='./js/controllers/TabCtr.js'></script>
        {{!-- 注册模块 --!}}
         <script src='./js/controllers/registerCtr.js'></script>
         <script src='./js/service/register.js'></script>

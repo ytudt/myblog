@@ -1,10 +1,12 @@
 angular.module('registe.controller', ['register.service', 'indexdb'])
-  .controller('registerCtr', ['$scope', '$state', 'indexDbJs',
+  .controller('registerCtr', ['$rootScope', '$scope', '$state', 'indexDbJs',
     'registerFty',
-    function($scope, $state, indexDbJs, registerFty) {
+    function($rootScope, $scope, $state, indexDbJs, registerFty) {
 
       // 验证两次密码是否一致
-      $scope.receiveMsg = '';
+
+
+
       $scope.confirPassword = function() {
         if ($scope.psd === $scope.repsd) {
           $scope.passwordSame = true;
@@ -19,6 +21,9 @@ angular.module('registe.controller', ['register.service', 'indexdb'])
         promise.then(function(data) {
             switch (data.code) {
               case 200:
+                $rootScope.userInfo = {
+                  userName: $scope.userName
+                };
                 $state.go('tab.javascript');
                 break;
               case -1:
@@ -43,35 +48,38 @@ angular.module('registe.controller', ['register.service', 'indexdb'])
       //==============数据库调用demo=======================
       //1.创建表indexDbJs.createStore(storeInfo, indeInfo, callback)
       // indexDbJs.createStore({ stname: 'add1' }, [{ indexName: 'f_userName', index: 'userName' }, { indexName: 'f_id', index: 'id' }], function(data) {
-      //         console.log(data);
+      //     console.log(data);
+      //     indexDbJs.selectDataById('add1', 1, function(data) {
+      //       console.log(data);
       //     })
-      //2.往某个表添加数据indexDbJs.add(objectStoreName, data, callback)
-      // indexDbJs.add('addressstorex2111',[], [
-      // {
-      //      userName:'dt',
-      //      age:18
-      // }, {
-      //      userName:'dt1',
-      //      age:19
-      // }, {
-      //      userName:'张三',
-      //      age:20
-      // }, {
-      //      userName:'张三',
-      //      age:21
-      // }, {
-      //      userName:'张三',
-      //      age:22
-      // },
-      //      ]
-      //   , function(data){
-      //      console.log(data);
-      // })
-      // 3.更新某个表的数据indexDbJs.update(objectStoreName, data, callback)
-      // indexDbJs.update('addressstore', [
-      // {
-      //     id:1,
-      //     userName:"李四"
+      //   })
+        //2.往某个表添加数据indexDbJs.add(objectStoreName, data, callback)
+        // indexDbJs.add('addressstorex2111',[], [
+        // {
+        //      userName:'dt',
+        //      age:18
+        // }, {
+        //      userName:'dt1',
+        //      age:19
+        // }, {
+        //      userName:'张三',
+        //      age:20
+        // }, {
+        //      userName:'张三',
+        //      age:21
+        // }, {
+        //      userName:'张三',
+        //      age:22
+        // },
+        //      ]
+        //   , function(data){
+        //      console.log(data);
+        // })
+        // 3.更新某个表的数据indexDbJs.update(objectStoreName, data, callback)
+        // indexDbJs.update('addressstore', [
+        // {
+        //     id:1,
+        //     userName:"李四"
 
       // },{
       //     id:2,

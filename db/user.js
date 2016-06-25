@@ -7,7 +7,7 @@ var UserSchema = new Schema({
   loginname: { type: String},
   passWord: { type: String },
   email: { type: String},
-  avatar: { type: String, default:''},
+  avatar: { type: String, default:'./userAvatar/defaltAvatar.png'},
   create_at: { type: Date, default: Date.now }
 });
 

@@ -9,6 +9,9 @@ angular.module('login.controller', ['login.service', 'indexdb'])
         promise.then(function(data) {
             switch (data.code) {
               case 200:
+              $rootScope.userInfo={
+                userName:$scope.userName
+              };
                 $state.go('tab.javascript');
                 break;
               case -1:

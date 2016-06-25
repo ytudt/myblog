@@ -24,6 +24,9 @@ body {
 .fr {
     float: right
 }
+li{
+    list-style: none;
+}
 a {
   text-decoration: none;
 }

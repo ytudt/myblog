@@ -31,6 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'userAvatar')));
 
 // 加载路由中间件
 app.use(require('./router'));
