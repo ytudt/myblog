@@ -417,6 +417,7 @@
 [2016-06-25 17:49:50.455] [DEBUG] nomal - debug logger
 [2016-06-25 17:50:21.364] [DEBUG] nomal - debug logger
 [2016-06-25 19:23:35.118] [DEBUG] nomal - debug logger
+<<<<<<< HEAD
 [2016-07-02 14:29:56.959] [DEBUG] nomal - debug logger
 [2016-07-02 14:33:01.860] [DEBUG] nomal - debug logger
 [2016-07-02 14:33:38.505] [DEBUG] nomal - debug logger
@@ -532,3 +533,6 @@
 [2016-07-02 16:01:22.981] [DEBUG] nomal - debug logger
 [2016-07-02 16:02:32.089] [DEBUG] nomal - debug logger
 [2016-07-02 16:03:16.955] [DEBUG] nomal - debug logger
+=======
+[2016-06-26 18:53:02.024] [DEBUG] nomal - debug logger
+>>>>>>> 95e1e63e5343cc0046542e1aad2ff8be0bbe9be4

@@ -47,6 +47,8 @@ tab栏
 
 .modifyAvatar {
   margin-left: 10px;
+  display: inline-block;
+  width: 360px;
 }
 
 .modal-footer {
