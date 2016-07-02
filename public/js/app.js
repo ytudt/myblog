@@ -5,7 +5,7 @@
 // * @Last Modified time: 2016-06-07 11:06:57
 
 
-var myApp = angular.module('myApp', ['ui.router', 'router', 'ui.bootstrap',  'indexdb', 'drective.tree', 'config'])
+var myApp = angular.module('myApp', ['ui.router', 'router', 'ui.bootstrap', 'indexdb', 'drective.tree', 'config', 'angularFileUpload'])
   .run(function($rootScope) {
     // $rootScope.userInfo = true;
   })
@@ -19,3 +19,7 @@ var myApp = angular.module('myApp', ['ui.router', 'router', 'ui.bootstrap',  'in
     localStorage.setItem("a", a);
     $urlRouterProvider.otherwise('/tab/javascript');
   })
+  .controller('mainController', ['$scope', 'FileUploader', 'GlobalVariable', function($scope, FileUploader, GlobalVariable) {
+
+
+  }]);

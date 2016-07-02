@@ -12,7 +12,8 @@ gulp.task('copyJs', function () {
     'bower_components/angular-touch/angular-touch.min.js',
     'bower_components/angular-animate/angular-animate.min.js',
     'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-    'bower_components/angular-tree-control/angular-tree-control.js'
+    'bower_components/angular-tree-control/angular-tree-control.js',
+    'bower_components/angular-file-upload/dist/angular-file-upload.min.js'
     ])
     .pipe(gulp.dest('public/js/lib'));
 });

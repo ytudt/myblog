@@ -1,9 +1,7 @@
-angular.module('tab.controller', [])
-  .controller('TabCtrl', ['$scope', '$log', '$uibModal', function($scope, $log, $uibModal) {
+angular.module('tab.controller', ['angularFileUpload'])
+  .controller('TabCtrl', ['$scope', '$log', '$uibModal','FileUploader','GlobalVariable', function($scope, $log, $uibModal, FileUploader, GlobalVariable) {
     $scope.receiveMsg = '';
-
-
-
+    console.log()
     $scope.items = [
       'The first choice!',
       'And another choice for you.',
@@ -93,11 +91,13 @@ angular.module('tab.controller', [])
 
 
 
+
   }]);
 
 
 angular.module('tab.controller')
-  .controller('ModalInstanceCtrl', function($scope, $uibModalInstance, items) {
+  .controller('ModalInstanceCtrl', function($scope,FileUploader, GlobalVariable, $uibModalInstance, items) {
+    console.log(FileUploader);
     $scope.passwordSame = true;
     $scope.psd = '';
     $scope.repsd = '';
@@ -124,13 +124,39 @@ angular.module('tab.controller')
       // console.log(event)
       // console.log(file);
 
+    };
+     $scope.uploadStatus= false; //定义两个上传后返回的状态，成功获失败
+        var uploader = $scope.uploader = new FileUploader({
+      url: GlobalVariable.SERVEI_PATH + "/set",
+      queueLimit: 1, //文件个数
+      removeAfterUpload: true //上传后删除文件
+    });
+    $scope.clearItems = function() { //重新选择文件时，清空队列，达到覆盖文件的效果
+      uploader.clearQueue();
+    };
+    uploader.onAfterAddingFile = function(fileItem) {
+      $scope.fileItem = fileItem._file; //添加文件之后，把文件信息赋给scope
+    };
+    uploader.onSuccessItem = function(fileItem, response, status, headers) {
+      $scope.uploadStatus = true; //上传成功则把状态改为true
+      console.log( $scope.uploadStatus);
+    };
+    $scope.UploadFile = function() {
+      uploader.uploadAll();
+      if (status) {
+
+          alert('上传成功！');
+
+      } else {
+
+          alert('上传失败！');
+
+      }
     }
-    $scope.$watch(function(){
-     if( $scope.psd==''&&$scope.psd==''){
+    $scope.$watch(function() {
+      if ($scope.psd == '' && $scope.psd == '') {
         $scope.passwordSame = true;
       }
-      console.log($scope.psd);
-
     });
 
   });

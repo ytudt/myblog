@@ -47,9 +47,9 @@
     <span id=result></span>
       <!-- <img src="./defaltAvatar.png" alt="" id='avatarImg'> -->
       <!-- <input type="file"  ng-change="changeAvatar()"> -->
-        <input class="filename" type="text" readonly="readonly" />
+        <input class="filename" type="text" readonly="readonly" ng-model="fileItem.name" />
       <a href=" javascript:;" class="fileWrap">
-           <input type="file" ng-model="file" ng-change="changeAvatar()"  id="input_file">浏览
+           <input type="file" ng-model="file"   id="input_file" nv-file-select uploader="uploader" ng-click="clearItems()">浏览
       </a>
 
     </div>
@@ -57,7 +57,7 @@
     </br>
   </form>
   <div class="modal-footer">
-    <input type="submit" class="btn btn-primary" ng-disabled="modifyForm.$invalid||!passwordSame" value="确认">
+    <input type="submit" class="btn btn-primary" ng-disabled="modifyForm.$invalid||!passwordSame" value="确认" ng-click="UploadFile()">
     <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
   </div>
 </script>
