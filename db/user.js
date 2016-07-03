@@ -1,13 +1,14 @@
 
 
-var mongoose  = require('mongoose');
-var Schema    = mongoose.Schema;
+const mongoose  = require('mongoose');
+const Schema    = mongoose.Schema;
+const config = require('../config/config');
 
 var UserSchema = new Schema({
   loginname: { type: String},
   passWord: { type: String },
   email: { type: String},
-  avatar: { type: String, default:'./userAvatar/defaltAvatar.png'},
+  avatar: { type: String, default:config.avatar},
   create_at: { type: Date, default: Date.now }
 });
 

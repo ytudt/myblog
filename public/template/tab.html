@@ -7,12 +7,13 @@
       <span style="width:100px" ui-sref=".nodejs"><a href="">node</a></span>
     </div>
     <div class="fr">
-      <span style="width:100px" ui-sref=".register" ng-hide="!userInfo"><a href="">注册</a></span>
-      <span style="width:100px" ui-sref=".login" ng-hide="!userInfo"><a href="">登录</a></span>
+      <span style="width:100px" ui-sref=".register" ng-hide="userInfo"><a href="">注册</a></span>
+      <span style="width:100px" ui-sref=".login" ng-hide="userInfo"><a href="">登录</a></span>
       <span uib-dropdown on-toggle="toggled(open)">
-      <a href id="simple-dropdown" uib-dropdown-toggle>
+      <a href id="simple-dropdown" uib-dropdown-toggle ng-hide="!userInfo">
         您好,<i>错{{userInfo.userName}}</i>
       </a>
+      <img class="avatar" src={{userInfo.avatar}} alt="">
       <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
     <li role="menuitem"><a href="#"  >我</a></li>
 

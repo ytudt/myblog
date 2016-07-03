@@ -1,16 +1,18 @@
 angular.module('login.controller', ['login.service', 'indexdb'])
-  .controller('loginCtr', ['$scope', '$state', 'indexDbJs',
+  .controller('loginCtr', ['$rootScope','$scope', '$state', 'indexDbJs',
     'loginFty',
-    function($scope, $state, indexDbJs, loginFty) {
-      console.log(111)
+    function($rootScope,$scope, $state, indexDbJs, loginFty) {
+      console.log(loginFty)
       $scope.login = function() {
         var message = 'lologinname=' + $scope.userName + '&passWord=' + $scope.psd ;
         var promise = loginFty.doLogin(message);
         promise.then(function(data) {
+          console.log(data);
             switch (data.code) {
               case 200:
               $rootScope.userInfo={
-                userName:$scope.userName
+                userName:$scope.userName,
+                avatar:data.avatar
               };
                 $state.go('tab.javascript');
                 break;

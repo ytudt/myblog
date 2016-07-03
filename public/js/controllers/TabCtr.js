@@ -1,7 +1,8 @@
 angular.module('tab.controller', ['angularFileUpload'])
-  .controller('TabCtrl', ['$scope', '$log', '$uibModal','FileUploader','GlobalVariable', function($scope, $log, $uibModal, FileUploader, GlobalVariable) {
+  .controller('TabCtrl', ['$rootScope','$scope', '$log', '$uibModal', 'FileUploader', 'GlobalVariable', function($rootScope,$scope, $log, $uibModal, FileUploader, GlobalVariable) {
     $scope.receiveMsg = '';
-    console.log()
+
+
     $scope.items = [
       'The first choice!',
       'And another choice for you.',
@@ -50,9 +51,9 @@ angular.module('tab.controller', ['angularFileUpload'])
       setTimeout(function() {
         var inputFile = document.getElementById('input_file');
         var result = document.getElementById('result');
-        console.log(inputFile);
+        // console.log(inputFile);
         inputFile.addEventListener('change', function(e) {
-          console.log('变了');
+          // console.log('变了');
           var file = inputFile.files[0];
           if (file) {
             // 用户选了文件
@@ -68,7 +69,7 @@ angular.module('tab.controller', ['angularFileUpload'])
               var img = document.createElement('img');
               // img.style.width="300px"
               img.src = this.result;
-              console.log(this)
+              // console.log(this)
               result.appendChild(img);
             });
             // 没有返回结果怎么办？
@@ -96,8 +97,8 @@ angular.module('tab.controller', ['angularFileUpload'])
 
 
 angular.module('tab.controller')
-  .controller('ModalInstanceCtrl', function($scope,FileUploader, GlobalVariable, $uibModalInstance, items) {
-    console.log(FileUploader);
+  .controller('ModalInstanceCtrl', function($rootScope,$scope, $state, FileUploader, GlobalVariable, $uibModalInstance, items) {
+    // console.log(FileUploader);
     $scope.passwordSame = true;
     $scope.psd = '';
     $scope.repsd = '';
@@ -109,7 +110,7 @@ angular.module('tab.controller')
       $uibModalInstance.dismiss('cancel');
     };
     $scope.modifyPassword = function() {
-      console.log(111);
+      // console.log(111);
       if ($scope.psd === $scope.repsd) {
         $scope.passwordSame = true;
       } else {
@@ -118,18 +119,12 @@ angular.module('tab.controller')
     }
     $scope.file = '';
     $scope.changeAvatar = function() {
-      console.log(event);
-      console.log($scope.file);
-      // var file = event.files[0];
-      // console.log(event)
-      // console.log(file);
-
     };
-     $scope.uploadStatus= false; //定义两个上传后返回的状态，成功获失败
-        var uploader = $scope.uploader = new FileUploader({
+    $scope.uploadStatus = false; //定义两个上传后返回的状态，成功获失败
+    var uploader = $scope.uploader = new FileUploader({
       url: GlobalVariable.SERVEI_PATH + "/set",
       queueLimit: 1, //文件个数
-      removeAfterUpload: true //上传后删除文件
+      removeAfterUpload: true, //上传后删除文件
     });
     $scope.clearItems = function() { //重新选择文件时，清空队列，达到覆盖文件的效果
       uploader.clearQueue();
@@ -138,20 +133,22 @@ angular.module('tab.controller')
       $scope.fileItem = fileItem._file; //添加文件之后，把文件信息赋给scope
     };
     uploader.onSuccessItem = function(fileItem, response, status, headers) {
+
+      if(response.code!=200){
+        console.log('修改失败');
+      }else{
+        $rootScope.userInfo.avatar=response.avatar;
+        // $scope.$apply();
+        $uibModalInstance.dismiss('cancel');
+         $state.go('tab.javascript');
+
+      }
       $scope.uploadStatus = true; //上传成功则把状态改为true
-      console.log( $scope.uploadStatus);
+
+
     };
     $scope.UploadFile = function() {
       uploader.uploadAll();
-      if (status) {
-
-          alert('上传成功！');
-
-      } else {
-
-          alert('上传失败！');
-
-      }
     }
     $scope.$watch(function() {
       if ($scope.psd == '' && $scope.psd == '') {

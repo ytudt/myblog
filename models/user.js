@@ -33,13 +33,13 @@ exports.qNewAndSave = function(lologinname, passWord, email) {
  * @param {String} loginname 登录名
  * @param {Function} callback 回调函数
  */
- let getUserByloginname=function(loginname, callback) {
+let getUserByloginname = function(loginname, callback) {
   User.findOne({ loginname: loginname }, callback);
 };
-var obj={
-  name:'dt'
-}
-// 用q封装版根据登录名查找用户
+var obj = {
+    name: 'dt'
+  }
+  // 用q封装版根据登录名查找用户
 exports.qGetUserByloginname = function(lologinname) {
   var defer = Q.defer();
   getUserByloginname(lologinname, function(error, data) {
@@ -92,3 +92,31 @@ exports.qGetUserByMail = function(email) {
   });
   return defer.promise;
 };
+/**
+ * 根据用户名更新头像
+ * Callback:
+ * - err, 数据库异常
+ * - lologinname, 用户名
+ * - avatar, 头像路径
+ * @param {Function} callback 回调函数
+ */
+exports.setAvatar = function(lologinname,newPath, callback) {
+  // console.log(1);
+  // console.log(lologinname);
+  // console.log(avatar);
+  // console.log(data);
+  getUserByloginname(lologinname,function(err,data){
+    if(err||!data){
+      return callback(err);
+    }
+    data.avatar=newPath;
+    console.log('avatar');
+    console.log(data);
+    data.save(callback)
+  })
+  // let user = new User();
+  // user.loginname = loginname;
+  // user.passWord = passWord;
+  // user.email = email;
+  // User.update({"_id" : data._id},{$set:{"avatar":data.avatar}});
+}

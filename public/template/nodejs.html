@@ -36,11 +36,23 @@
 
 <!-- <my-tree></my-tree> -->
 <!-- as a Dom element -->
-<treecontrol class="tree-classic"
+<!-- <treecontrol class="tree-classic"
    tree-model="dataForTheTree"
    options="treeOptions"
    on-selection="showSelected(node)"
    selected-node="node1">
    employee: {{node.name}} age {{node.age}}
-</treecontrol>
+</treecontrol> -->
+
+
+
+  <input type="text" ng-model="myModelObj">
+  <input type="file" ng-file-select="onFileSelect($files)">
+
+  <!-- <div ng-file-drop="onFileSelect($files)" ng-file-drag-over-class="optional-css-class-name-or-function"
+        ng-show="dropSupported">drop files here</div>
+  <div ng-file-drop-available="dropSupported=true"
+        ng-show="!dropSupported">HTML5 Drop File is not supported!</div> -->
+  <!-- <button ng-click="onFileSelect()">onFileSelect</button> -->
+
 

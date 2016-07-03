@@ -1,167 +1,32 @@
-angular.module('nodejs.controller', ['treeControl'])
-  .controller('nodejsCtr', ['$scope', function($scope) {
-    console.log(1111);
-    // $scope.loadData = function() {
-    //   console.log('鼠标滑动了')
-    // }
-    // $scope.ctrlFlavor = "百威";
-    // $scope.sayHello = function(name) {
-    //   console.log('hello' + name)
-    // }
-    // $scope.name = 'dt';
-    // $scope.age = 18;
-    // $scope.changeAge = function(){
-    //     $scope.age = 0;
-    // }
-//    $scope.treeData=[
-//    {
-//       "id":"1",
-//       "pid":"0",
-//       "name":"家用电器",
-//       "children":[
-//          {
-//             "id":"4",
-//             "pid":"1",
-//             "name":"大家电",
-//             "children":[
-//             {
-//               id:10,
-//               pid:4,
-//               name:'电视',
-//               children:[{
-//                 id:11,
-//               pid:10,
-//               name:'海尔',
-//               }]
-//             },
-//             ]
-//          },
-//          {
-//             "id":"5",
-//             "pid":"1",
-//             "name":"大家电"
-//          },
-//          {
-//             "id":"6",
-//             "pid":"1",
-//             "name":"大家电"
-//          }
-//       ]
-//    },
-//    {
-//        "id":"2",
-//       "pid":"0",
-//       "name":"生活用品",
-//       "children":[
-//          {
-//             "id":"7",
-//             "pid":"2",
-//             "name":"大家电"
-//          },
-//           {
-//             "id":"8",
-//             "pid":"2",
-//             "name":"大家电"
-//          },
-//           {
-//             "id":"9",
-//             "pid":"2",
-//             "name":"大家电"
-//          }
-//       ]
-//    }
+angular.module('nodejs.controller', ['treeControl','angularFileUpload'])
+  .controller('nodejsCtr', ['$scope', 'FileUploader',function($scope,FileUploader) {
+    $scope.onFileSelect = function($files) { //$files: an array of files selected, each file has name, size, and type.
+      console.log(111);
+      // for (var i = 0; i < $files.length; i++) {
+        var file = $files[0];
+        $scope.upload = $upload.upload({
+          url: GlobalVariable.SERVEI_PATH + "/set", //upload.php script, node.js route, or servlet url
+          //method: 'POST' or 'PUT',
+          //headers: {'header-key': 'header-value'},
+          //withCredentials: true,
+          data: { myObj: $scope.myModelObj },
+          file: file, // or list of files ($files) for html5 only
+          //fileName: 'doc.jpg' or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s)
+          // customize file formData name ('Content-Disposition'), server side file variable name.
+          //fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file'
+          // customize how data is added to formData. See #40#issuecomment-28612000 for sample code
+          //formDataAppender: function(formData, key, val){}
+        }).progress(function(evt) {
+          console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+        }).success(function(data, status, headers, config) { // file is uploaded successfully
+          console.log(data);
+        }); //.error(...)
+        //.then(success, error, progress);
+        // access or attach event listeners to the underlying XMLHttpRequest.
+        //.xhr(function(xhr){xhr.upload.addEventListener(...)})
+      // } /* alternative way of uploading, send the file binary with the file's content-type.       Could be used to upload files to CouchDB, imgur, etc... html5 FileReader is needed.        It could also be used to monitor the progress of a normal http post/put request with large data*/
 
-// ]
- // $scope.items=[
- // {
- //  id:0,
- //  name:0,
- // },{
- //  id:1,
- //  pid:0,
- //  name:1
- // },
- // {
- //  id:2,
- //  pid:0,
- //  name:2
- // },
- // {
- //  id:3,
- //  pid:0,
- //  name:3
- // },
- // {
- //  id:4,
- //  pid:1,
- //  name:4
- // },
- // {
- //  id:5,
- //  pid:1,
- //  name:5
- // },
- // {
- //  id:6,
- //  pid:4,
- //  name:6
- // },
- // {
- //  id:7,
- //  pid:4,
- //  name:7
- // },
- // {
- //  id:8,
- //  pid:4,
- //  name:8
- // },
- // {
- //  id:9,
- //  pid:6,
- //  name:9
- // },
- // {
- //  id:10,
- //  pid:9,
- //  name:10
- // },
- // {
- //  id:11,
- //  pid:9,
- //  name:11
- // }
- // ]
- //
- // ======================================
-//  $scope.treeOptions = {
-//     nodeChildren: "children",
-//     dirSelectable: true,
-//     injectClasses: {
-//         ul: "a1",
-//         li: "a2",
-//         liSelected: "a7",
-//         iExpanded: "a3",
-//         iCollapsed: "a4",
-//         iLeaf: "a5",
-//         label: "a6",
-//         labelSelected: "a8"
-//     }
-// }
-// $scope.dataForTheTree =
-// [
-//     { "name" : "Joe", "age" : "21", "children" : [
-//         { "name" : "Smith", "age" : "42", "children" : [] },
-//         { "name" : "Gary", "age" : "21", "children" : [
-//             { "name" : "Jenifer", "age" : "23", "children" : [
-//                 { "name" : "Dani", "age" : "32", "children" : [] },
-//                 { "name" : "Max", "age" : "34", "children" : [] }
-//             ]}
-//         ]}
-//     ]},
-//     { "name" : "Albert", "age" : "33", "children" : [] },
-//     { "name" : "Ron", "age" : "29", "children" : [] }
-// ];
- var a=localStorage.getItem("a");
- console.log(a);
+    }
+
+
   }])

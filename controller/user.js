@@ -5,6 +5,7 @@ const User = require('../models').User;
 const Tools = require('../common/tools.js');
 const Logger = require('../common/logger.js');
 const formidable = require('formidable');
+var config = require('../config/config');
 
 // 注册
 exports.signUp = function(req, res, next) {
@@ -37,9 +38,14 @@ exports.signUp = function(req, res, next) {
       .then(function(data) {
         // console.log('第三步的数据' + data)
         if (data) {
+          req.session.userInfo = {
+            lologinname,
+            passWord
+          };
           res.json({
             code: 200,
-            msg: 'success'
+            msg: 'success',
+            avatar: config.avatar
           });
         }
       });
@@ -49,10 +55,9 @@ exports.signUp = function(req, res, next) {
 exports.signIn = function(req, res, next) {
   let lologinname = req.body.lologinname || '';
   let passWord = Tools.md5(req.body.passWord || 0);
-  console.log(lologinname);
-  console.log(passWord);
   User.qGetUserByloginname(lologinname)
     .then(function(data) {
+      // console.log(data);
       if (!data) {
         res.json({
           code: -1,
@@ -64,70 +69,62 @@ exports.signIn = function(req, res, next) {
           msg: 'passWord is Wrong'
         });
       } else {
+        // console.log('登录成功');
+        req.session.userInfo = {
+          lologinname,
+          passWord
+        };
         res.json({
           code: 200,
-          msg: 'success'
+          msg: 'success',
+          avatar: data.avatar
         });
       }
     });
 }
 exports.set = function(req, res, next) {
-  var form = new formidable.IncomingForm();
-  // console.log(__dirname);
+  console.log('session');
+  console.log(req.session.userInfo.lologinname);
+  console.log('session');
+  // let arr = [];
+  // let data = req.body.name || '';
+  let lologinname = req.session.userInfo.lologinname
+
+  let form = new formidable.IncomingForm();
   form.uploadDir = './userAvatar';
   form.parse(req, function(err, fields, files) {
 
     if (err) {
+      console.log('cuole');
       return res.json({
         code: '0',
         msg: 'failed'
       });
     }
-
     let tempPath = files.file.path;
     let extName = path.extname(files.file.name);
     let newPath = tempPath + extName;
 
+
+
     fs.rename(tempPath, newPath, function(err, data) {
-      // console.log(data);
+      newPath=newPath.replace('userAvatar','.');
+       console.log('newPath')
+      console.log(newPath);
+      User.setAvatar(lologinname, newPath, function(err, data) {
+        if (err) {
+          return res.json({
+            code: -1,
+          });
+        }
+        res.json({
+          code: 200,
+          avatar: newPath
+        });
+      });
 
     });
 
-    // let newPath = tmpPath + path.extname(name);
 
-    // fs.rename(tmpPath, newPath, function() {
-
-    //   // 将头像路径更新到数据库中
-
-
-    //   // 将该图片的请求路径响应给客户端就行了
-
-    //   // /uploads/path.basename(newPath)
-
-    //   gm(newPath)
-    //     .resize(100, 100, '!')
-    //     .write(newPath, function(err) {
-    //       if (err) {
-    //         return next(err);
-    //       }
-    //       let uid = req.session.user.id;
-    //       User.updateAvatarById(path.basename(newPath), uid, function(err, result) {
-    //         if (err) {
-    //           return next(err);
-    //         }
-    //         if (result.affectedRows > 0) {
-    //           res.json({
-    //             code: '1',
-    //             msg: `/uploads/avatar/${path.basename(newPath)}`
-    //           });
-    //         }
-    //       });
-    //     });
-    // });
-  });
-
-
-  res.json({
-    code: 200
   });
 }

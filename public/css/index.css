@@ -93,6 +93,10 @@ tab栏
   top: 0;
   opacity: 0;
 }
+#tab .avatar{
+height:44px;
+}
+
 
 // 注册页
 #register,
@@ -153,6 +157,7 @@ tab栏
 #tab .dropdown li:hover a {
   color: #333;
 }
+
 
 
 /*

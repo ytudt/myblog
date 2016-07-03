@@ -22,7 +22,8 @@ angular.module('registe.controller', ['register.service', 'indexdb'])
             switch (data.code) {
               case 200:
                 $rootScope.userInfo = {
-                  userName: $scope.userName
+                  userName: $scope.userName,
+                  avatar:data.avatar
                 };
                 $state.go('tab.javascript');
                 break;

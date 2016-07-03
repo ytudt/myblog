@@ -7,5 +7,5 @@
 
 angular.module('config',[])
 .constant("GlobalVariable",{
-  'SERVEI_PATH':'http://127.0.0.1:3000'
+  'SERVEI_PATH':'http://192.168.0.19:3000'
 })
