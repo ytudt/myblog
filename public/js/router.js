@@ -1,4 +1,4 @@
-angular.module('router',['registe.controller','nodejs.controller','login.controller','tab.controller'])
+angular.module('router',['registe.controller','nodejs.controller','login.controller','tab.controller','javascript.controller'])
 .config(function($stateProvider, $urlRouterProvider){
   $stateProvider
         .state("tab", {
@@ -8,7 +8,8 @@ angular.module('router',['registe.controller','nodejs.controller','login.control
         })
         .state("tab.javascript", {
             url:"/javascript",
-            templateUrl: "template/javascript.html"
+            templateUrl: "template/javascript.html",
+            controller:'javascriptCtr'
         })
         .state("tab.angular", {
             url:"/angular",

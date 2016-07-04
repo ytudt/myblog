@@ -34,6 +34,9 @@
            {{!-- nodejs模块 --!}}
         <script src='./js/controllers/nodejsCtr.js'></script>
         <script src='./js/controllers/01.js'></script>
+        <!-- javascript模块 -->
+         <script src='./js/controllers/javascript.js'></script>
+        <script src='./js/service/javascript.js'></script>
 
     </head>
     <body ng-app='myApp'>

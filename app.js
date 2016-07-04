@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use(session({
   secret: config.secret, // 每一次生成Cookie的值的时候，1 2 3 4 5 6，通过一个私钥生成一个随机字符串再交给客户端
   resave: false,
-  cookie: { maxAge: 80000 },
+  cookie: { maxAge: config.sessionTime},
   saveUninitialized: true
 }));
 
